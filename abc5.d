@@ -120,7 +120,7 @@ void someMixinsCalls( string[] args ) {
  * Make an array of fonts - the last one is set as the main one
  */
 void setUpGlobalFont() {
-//	g_fonts ~= al_load_font( "JJStencil solid.TTF", 36, 0 );
+//	g_fonts ~= al_load_font( "JJStencilsolid.TTF", 36, 0 );
 	g_fonts ~= al_load_font( "HARLOWSI.TTF", 36, 0 );
 	g_fonts ~= al_load_font( "DejaVuSans.ttf", 36, 0); // 18 seemed nice, (but small)
 	
