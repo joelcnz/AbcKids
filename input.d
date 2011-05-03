@@ -115,6 +115,7 @@ private:
 	immutable
 		keysStart = 0,
 		keysEnd = ALLEGRO_KEY_MAX;
+
 	// Add a letter and play a sound if letter key hit
 	string doAlphabet( int keyId, ref string text, ref bool doShowRefWords, ref bool doShowPicture  ) {
 		if ( keyId >= ALLEGRO_KEY_A && keyId <= ALLEGRO_KEY_Z && _keys[ keyId ].keyHit ) {
