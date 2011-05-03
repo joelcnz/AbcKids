@@ -19,6 +19,44 @@ import base, media, input;
  * Title: Current class for current viewing state
  */
 class Current {
+public:
+	
+	this() {
+		doShowRefWords = true,
+		doShowPicture = false;
+		noPicture = null;
+		_strInput = g_emptyText;
+		_media = loadInMedia; // from media module
+		_input = new Input;
+	}
+	
+	void logic() {
+	
+		doInputStuff;
+	
+		version( ChangingFonts ) {
+			static int fp = 0, fpt = 0;
+			++fpt;
+			if ( fpt == 20 ) {
+				FONT = g_fonts[ fp = ( fp == g_fonts.length - 1 ? 0 : fp + 1 ) ];
+				fpt = 0;
+			}
+		}
+	}
+
+	void draw() {
+		al_clear_to_color( Colour.black );
+		
+		drawPicture; // if one
+
+		drawReferenceWords; // words and stuff
+
+		//#not sure on using with with only one method call
+		with( _input )
+			drawTextInput;
+
+		al_flip_display;
+	}
 private:
 	IMedia[] _media; // sound, picture, and word dynamic array
 	Input _input; // handle keyboard input (user typing in the words/names)
@@ -115,43 +153,5 @@ private:
 							_picture = m.picture;
 					}
 		}
-	}
-public:
-	
-	this() {
-		doShowRefWords = true,
-		doShowPicture = false;
-		noPicture = null;
-		_strInput = g_emptyText;
-		_media = loadInMedia; // from media module
-		_input = new Input;
-	}
-	
-	void logic() {
-	
-		doInputStuff;
-	
-		version( ChangingFonts ) {
-			static int fp = 0, fpt = 0;
-			++fpt;
-			if ( fpt == 20 ) {
-				FONT = g_fonts[ fp = ( fp == g_fonts.length - 1 ? 0 : fp + 1 ) ];
-				fpt = 0;
-			}
-		}
-	}
-
-	void draw() {
-		al_clear_to_color( Colour.black );
-		
-		drawPicture; // if one
-
-		drawReferenceWords; // words and stuff
-
-		//#not sure on using with with only one method call
-		with( _input )
-			drawTextInput;
-
-		al_flip_display;
 	}
 }

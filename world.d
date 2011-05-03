@@ -19,9 +19,6 @@ import keyhandling, current;
  * Main loop handler
  */
 class World {
-private:
-	Current _current; /// handles the current state (current picture and display)
-	KeyHandling _keyHandling;
 public:
 	/**
 	 * Constructor:
@@ -55,4 +52,7 @@ public:
 			al_rest( 0.001 ) ;
 		}
 	}
+private:
+	Current _current; /// handles the current state (current picture and display)
+	KeyHandling _keyHandling;
 }
