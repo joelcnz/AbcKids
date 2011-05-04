@@ -11,6 +11,8 @@ dmd %src% abc.res -debug -debug=TDD
 if "%1"=="-r" (
 echo ------ Doing a version that runs without a terminal ------
 dmd %src% abc.res looseterm.def
+del *.obj
+del *.map
 )
 if "%1"=="-d" (
 echo ------ Doing documentation ------
