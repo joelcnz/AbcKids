@@ -11,7 +11,6 @@ import std.stdio;
 import std.string;
 
 import jeca.all;
-import jtools.misc;
 
 import keyhandling, current;
 

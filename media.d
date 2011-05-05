@@ -10,7 +10,6 @@ import std.exception;
 import std.traits: EnumMembers; // for foreach enums
 
 import jeca.all;
-import jtools.misc;
 
 import base, texthandling;
 
