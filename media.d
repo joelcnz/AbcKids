@@ -44,10 +44,10 @@ public:
 		ALLEGRO_COLOR slimColour,
 		string rootName
 	) {
-		debug
+		debug( 10 )
 			mixin( trace( "rootName" ) );
 		
-		string text = rootName[ indexOf( rootName, `/` ) + 1 .. $ ].idup;
+		string text = rootName[ indexOf( rootName, g_div ) + 1 .. $ ].idup;
 		_devide = true;
 		real xpos = 0f, ypos = 0f;
 		enum
@@ -157,8 +157,16 @@ auto loadInMedia() {
 		writeln( format( "%s%s", fileNameBase, extension ) ); //#does not crash like writefln can
 		
 		debug {
-			writeln( "Is    right! ", g_playBackFolder ~ `/` ~ fileNameBase );
-			writeln( "Is it right? " );
+			//writeln( "Path: ", to!string( al_get_path_filename( path ) ) );
+			//writeln( "Is    right! ", g_playBackFolder ~ g_div ~ fileNameBase );
+			//auto mediaFile = al_create_path( toStringz( g_playBackFolder ) );
+			//auto mediaFile = al_create_path( g_playBackFolder );
+			//scope( exit )
+			//	al_destroy_path( mediaFile );
+			//al_append_path_component( mediaFile, toStringz( fileNameBase ) );
+			//assert( al_join_paths( mediaFile, path ), "join failed" );
+			//assert( al_rebase_path( mediaFile, path ), "rebase fail" );
+			//writeln( "Is it right? ", to!string( al_get_path_filename( path ) ) );
 		}
 		
 		if ( fileNameBase !in oneEach ) {
@@ -171,7 +179,7 @@ auto loadInMedia() {
 						media,
 						Colour.red,
 						Colour.yellow,
-						g_playBackFolder ~ `/` ~ fileNameBase,
+						g_playBackFolder ~ g_div ~ fileNameBase,
 						//filename,
 					);
 				}

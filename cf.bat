@@ -6,7 +6,7 @@ echo cf -d  for creating html files
 echo cf     default developing
 if "%1"=="" (
 echo ----- Doing a version for WIP ------
-dmd %src% abc.res -debug -debug=TDD -I\jpro\dpro2\import
+dmd %src% abc.res -debug -debug=TDD -I\jpro\dpro2\import libjeca.lib
 )
 if "%1"=="-r" (
 echo ------ Doing a version that runs without a terminal ------
