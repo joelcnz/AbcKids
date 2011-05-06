@@ -59,13 +59,8 @@ static this() {
 void main( string[] args ) {
 	args = args[ 0 ] ~ "-wxh 640 480".split ~ args[ 1 .. $ ]; //#Split isn't clear this way ("foo bar".split), I think. Less typing though
 	
-	auto ready = false;
 	scope( exit ) { // try {} finally {}
-		if ( ready )
-			shutdown_input,
-			writeln( "shutdown_input done" );
-		else
-			writeln( "Did not Init." );
+		writeln( "Program exit" );
 	}
 	
 	someMixinsCalls( args );
@@ -76,8 +71,6 @@ void main( string[] args ) {
 		return;
 	}
 	
-	ready = true;
-
 	string[ ALLEGRO_COLOR ] colourLabel = [
 		Colour.red: "Red",
 		Colour.blue: "Blue",
