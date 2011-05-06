@@ -1,5 +1,5 @@
 @echo off
-rem src = abc5 .. doesn't work
+rem src = abc5 .. doesn't work, has to be src=abc5 (no spaces)
 set src=abc5 base world media input keyhandling texthandling current
 echo cf -r  for release version
 echo cf -d  for creating html files
