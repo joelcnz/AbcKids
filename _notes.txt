@@ -17,7 +17,7 @@ To run double click the 'abc5' [possibly 'abc5.exe'] that has the coloured ABC i
 Enter the comma seperated names and words shown on the window.
 
 Example:
-Type 'pumpkin' the hit Enter.
+Type 'fire' then hit Enter.
 To bring the text back up, hit Enter. You don't have to see the text to type more words and names in.
 To clear the picture and just show the text, hit Enter again.
 
