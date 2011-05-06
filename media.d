@@ -42,8 +42,7 @@ public:
 		IMedia[] media,
 		ALLEGRO_COLOR fatColour,
 		ALLEGRO_COLOR slimColour,
-		string rootName,
-		g_MediaType mediaType = g_MediaType.input
+		string rootName
 	) {
 		debug
 			mixin( trace( "rootName" ) );
@@ -174,7 +173,6 @@ auto loadInMedia() {
 						Colour.yellow,
 						g_playBackFolder ~ `/` ~ fileNameBase,
 						//filename,
-						g_MediaType.referance
 					);
 				}
 			}

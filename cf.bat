@@ -18,12 +18,5 @@ if "%1"=="-d" (
 echo ------ Doing documentation ------
 echo open html folder, select all files, then right click open. Note: Firefox doesn't know what to do
 dmd %src% -c -D
-move abc5.html html
-move base.html html
-move world.html html
-move media.html html
-move current.html html
-move input.html html
-move keyhandling.html html
-move texthandling.html html
+move *.html html
 )

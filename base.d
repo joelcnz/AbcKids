@@ -17,15 +17,13 @@ immutable NUMBER_OF_LETTERS_OF_THE_ALPHABET = 26;
 /// Font thickness setting
 enum g_PrintFatness { fat, slim };
 
-/// Type of media, (input word, ref word)
-enum g_MediaType {input, referance, invalid};
-
 /// Empty string
 enum g_emptyText = ""; // was g_nothing
 
 /// Alphabet letter sounds folder
 immutable g_voicesFolder = "Letters";
 
+/// Sounds, pictures and other media
 immutable g_playBackFolder = "Playback";
 
 /// reference word devider
