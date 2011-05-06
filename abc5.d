@@ -14,8 +14,7 @@ module type_hear_and_see;
 version( Windows ) {
 	pragma( lib, "liballegro5" );
 	pragma( lib, "libdallegro5" );
-	pragma( lib, "jeca" );
-	pragma( lib, "misc" );
+	pragma( lib, "libjeca" );
 }
 
 version( linux ) {
@@ -28,7 +27,6 @@ version( linux ) {
 	pragma( lib, "allegro_acodec" );
 
 	pragma( lib, "jeca" );
-	pragma( lib, "misc" );
 
 	pragma( lib, "dallegro5" );
 }
