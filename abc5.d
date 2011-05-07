@@ -46,7 +46,7 @@ import base, world;
  * http://stackoverflow.com/questions/5630137/for-and-foreach-statements-in-d
  */
 static this() {
-	foreach( type; TypeTuple!( int, long, short ) ) {
+	foreach( type; TypeTuple!( int, long, short, string ) ) {
 		pragma(msg, type);
 	}
 }
