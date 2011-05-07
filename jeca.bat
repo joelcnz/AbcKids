@@ -1,1 +1,1 @@
-cd ..\import\jeca
+cd ..\jeca
