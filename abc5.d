@@ -87,7 +87,7 @@ void main( string[] args ) {
 	mixin( test( `colourLabel[ al_get_pixel( bmp, 1, 0 ) ] == "Red"`, `colour is red` ) );
 	mixin( test( `colourLabel[ al_get_pixel( bmp, 2, 0 ) ] == "Blue"`, `colour is blue` ) );
 	
-	mixin( test( `colourLabel[ al_get_pixel( bmp, 3, 0 ) ] == "Black"`, `colour is unknown or some thing` ) );
+	mixin( test( `colourLabel[ al_get_pixel( bmp, 3, 0 ) ] == "Black"`, `background colour is black` ) );
 	
 	//#over engine eared, I think. But for practice.
 	// loop through functions and calling them - font and display icon
