@@ -70,7 +70,7 @@ void main( string[] args ) {
 	if ( Init( args, ALLEGRO_INIT | TIMER | KEYBOARD | SOUND | GRAPHICS ) != succeed ) { // No mouse
 		return;
 	}
-	
+
 	string[ ALLEGRO_COLOR ] colourLabel = [
 		Colour.red: "Red",
 		Colour.blue: "Blue",

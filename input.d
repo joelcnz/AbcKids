@@ -57,7 +57,7 @@ public:
 		// go through the letters of the alphabet
 		immutable a = 0, z = 26;
 		// Use this sound in the case of each letter sound fails to load
-		auto blowSnd = al_load_sample( toStringz( g_playBackFolder ~ "/blow.wav" ) );
+		auto blowSnd = new Snd(  g_playBackFolder ~ "/blow.wav" );
 		foreach( letter; a .. z ) {
 			auto fileName = g_voicesFolder ~ `/` ~ lowercase[ letter ] ~ ".wav";
 
@@ -67,7 +67,7 @@ public:
 				fileName = otherFileName;
 
 			if ( exists( fileName ) ) {
-				_lsnds[ letter ] = al_load_sample( toStringz( fileName ) );
+				_lsnds[ letter ] = new Snd( fileName );
 				if ( _lsnds[ letter ] is null ) {
 					writeln( fileName, " - not load! - Get hold of your vendor at once!" );
 					_lsnds[ letter ] = blowSnd; // default sound
@@ -110,24 +110,17 @@ public:
 	}
 private:
 	Key[ ALLEGRO_KEY_MAX + 1 ] _keys;
-	ALLEGRO_SAMPLE*[ NUMBER_OF_LETTERS_OF_THE_ALPHABET ] _lsnds;
+	Snd[ NUMBER_OF_LETTERS_IN_THE_ALPHABET ] _lsnds;
 	IText _text;
 	immutable
 		keysStart = 0,
-		keysEnd = ALLEGRO_KEY_MAX;
+		keysEnd = ALLEGRO_KEY_MAX + 1;
 
 	// Add a letter and play a sound if letter key hit
 	string doAlphabet( int keyId, ref string text, ref bool doShowRefWords, ref bool doShowPicture  ) {
 		if ( keyId >= ALLEGRO_KEY_A && keyId <= ALLEGRO_KEY_Z && _keys[ keyId ].keyHit ) {
 			// Play letter
-			al_play_sample(
-				_lsnds[ keyId - ALLEGRO_KEY_A ], // sample data
-				0.3, // gain
-				ALLEGRO_AUDIO_PAN_NONE, // pan
-				1.0, //#speed (pitch?)
-				ALLEGRO_PLAYMODE.ALLEGRO_PLAYMODE_ONCE,
-				null // ref id
-			);
+			_lsnds[ keyId - ALLEGRO_KEY_A ].play;
 
 			// add letter
 			enum keyShift = key[ ALLEGRO_KEY_LSHIFT ] || key[ ALLEGRO_KEY_RSHIFT ];

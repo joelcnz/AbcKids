@@ -11,7 +11,7 @@ dmd %src% abc.res -debug -debug=TDD libjeca.lib
 )
 
 if "%1"=="-r" (
-echo ------ Doing a version that runs without a terminal ------
+echo ------ Doing a release version that runs without a terminal ------
 dmd %src% abc.res looseterm.def
 del *.obj
 del *.map

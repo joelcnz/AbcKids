@@ -12,7 +12,7 @@ import allegro5.allegro_font;
 ALLEGRO_FONT*[] g_fonts; // public by default
 
 /// Store the number of letters in the English alphabet
-immutable NUMBER_OF_LETTERS_OF_THE_ALPHABET = 26;
+immutable NUMBER_OF_LETTERS_IN_THE_ALPHABET = 26;
 
 /// Font thickness setting
 enum g_PrintFatness { fat, slim };
