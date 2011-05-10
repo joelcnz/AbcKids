@@ -24,8 +24,8 @@ public:
 		doShowPicture = false;
 		noPicture = null;
 		_strInput = g_emptyText;
-		_media = loadInMedia; // from media module
-		_input = new Input;
+		_media = Media.loadInMedia(); // from media module
+		_input = new Input();
 	}
 	
 	void logic() {
@@ -81,11 +81,6 @@ private:
 				SCREEN_H = al_get_display_height( DISPLAY );
 			real dw, dh;
 			dw = dh = 0;
-			/+
-			auto bmp = al_create_bitmap( 640, 480 );
-			scope( exit )
-				al_destroy_bitmap( bmp );
-			+/
 			if ( sw > SCREEN_W || sh > SCREEN_H ) {
 				real max = fmax( sw, sh );
 				real max2 = ( max == sw ? 640 : 480 );
@@ -96,11 +91,7 @@ private:
 				dw = sw;
 				dh = sh;
 			}
-			/+
-			mixin( trace( "max" ) );
-			mixin( trace( "dw" ) );
-			mixin( trace( "dh" ) );
-			+/
+			
 			void draw() {
 				al_draw_scaled_bitmap(
 					/* bitmap: */ _picture,
@@ -115,15 +106,7 @@ private:
 					/* flags: */ 0
 				);
 			}
-			draw;
-
-			/+
-			al_draw_bitmap(
-				/* soure bitmap: */ _picture,
-				/* xpos: */ ( al_get_display_width( DISPLAY ) - al_get_bitmap_width( _picture ) ) / 2,
-				/* ypos: */ 0,
-				/* flags: */ 0 );
-			+/
+			draw();
 		}
 	}
 

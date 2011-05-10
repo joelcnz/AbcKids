@@ -52,6 +52,6 @@ public:
 		}
 	}
 private:
-	Current _current; /// handles the current state (current picture and display)
+	Current _current; // handles the current state (current picture and display)
 	KeyHandling _keyHandling;
 }

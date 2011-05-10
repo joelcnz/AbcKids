@@ -8,6 +8,7 @@ import std.string;
 import std.conv: to;
 import std.exception;
 import std.traits: EnumMembers; // for foreach enums
+import std.path;
 
 import jeca.all;
 
@@ -34,6 +35,85 @@ private:
 	bool _devide;
 	IText _text;
 public:
+	/**
+	 * Helper function for the media class - loads media off HDD creating objects for the media
+	 */
+	static auto loadInMedia() {
+		
+		IMedia[] media;
+		
+		bool[string] oneEach;
+
+		enum mediaLengthGreaterThanZero = media.length > 0;
+		
+		//#didn't read the instructions properly, didn't see (SpanMode.shallow) single folder only (not use sub folders).
+		string[] names;
+		foreach ( string e; dirEntries( g_playBackFolder, SpanMode.shallow) ) {
+			names ~= e;
+		}
+
+		// go through all the files setting them up
+		foreach( name; names.sort ) {
+			auto path = al_create_path( toStringz( name ) );
+			scope( exit )
+				al_destroy_path( path );
+
+			alias al_get_path_extension getExtension;
+			string 
+				extension = tolower( to!string( getExtension( path ) ) ),
+				fileNameBase;
+			if ( name.isFile )
+				fileNameBase = to!string( al_get_path_basename( path ) );
+			else {
+				writeln( "Ignore directory - ", name );
+				continue;
+			}
+
+			//#was under debug
+			writeln( format( "%s%s", fileNameBase, extension ) ); //#does not crash like writefln can
+			
+			debug {
+				//writeln( "Path: ", to!string( al_get_path_filename( path ) ) );
+				//writeln( "Is    right! ", g_playBackFolder ~ g_div ~ fileNameBase );
+				//auto mediaFile = al_create_path( toStringz( g_playBackFolder ) );
+				//auto mediaFile = al_create_path( g_playBackFolder );
+				//scope( exit )
+				//	al_destroy_path( mediaFile );
+				//al_append_path_component( mediaFile, toStringz( fileNameBase ) );
+				//assert( al_join_paths( mediaFile, path ), "join failed" );
+				//assert( al_rebase_path( mediaFile, path ), "rebase fail" );
+				//writeln( "Is it right? ", to!string( al_get_path_filename( path ) ) );
+			}
+			
+			if ( fileNameBase !in oneEach ) {
+				oneEach[ fileNameBase ] = true;
+				auto aMatch = false;
+				foreach( current; g_mediaExtentions.split ) {
+					if ( extension == current ) {
+						aMatch = true;
+						media ~= new Media(
+							media,
+							Colour.red,
+							Colour.yellow,
+							g_playBackFolder ~ sep ~ fileNameBase,
+							//filename,
+						);
+					}
+				}
+				// If no matches for file (eg. 'shoe.mud' wouldn't be a match)
+				enum notAMatch = ! aMatch;
+				if ( notAMatch )
+					writeln( "Reject: ", to!string( al_get_path_filename( path ) ) );
+			}
+		} // for Dir
+		
+		// Take off the devide text for the last referance word
+		if ( mediaLengthGreaterThanZero )
+			media[ $ - 1 ].devide = false;
+		
+		return media;
+	}
+
 	@property IText text() { return _text; }
 	@property ALLEGRO_BITMAP* picture() { if ( _pic !is null ) return _pic(); else return null; } //#gotcha
 	@property void devide( in bool devide0 ) { _devide = devide0; }
@@ -47,17 +127,17 @@ public:
 		debug( 10 )
 			mixin( trace( "rootName" ) );
 		
-		string text = rootName[ indexOf( rootName, g_div ) + 1 .. $ ].idup;
+		string text = rootName[ indexOf( rootName, sep ) + 1 .. $ ].idup;
 		_devide = true;
 		real xpos = 0f, ypos = 0f;
 		enum
-			prev = media[ $ - 1 ], // prev - previous media object
+			last = media[ $ - 1 ], // prev - previous media object
 			mediaLengthGreaterThanZero = media.length > 0;
 
 		if ( mediaLengthGreaterThanZero ) {
 			// last pos plus new word
-			xpos = prev.text.xpos + al_get_text_width( FONT, toStringz( prev.text.stringText ~ g_devide) );
-			ypos = prev.text.ypos;
+			xpos = last.text.xpos + al_get_text_width( FONT, toStringz( last.text.stringText ~ g_devide) );
+			ypos = last.text.ypos;
 			//If would hang over the edge of the screen, then start new line for word etc
 			if ( xpos + al_get_text_width( FONT, toStringz( text ~ g_devide ) ) > al_get_display_width( DISPLAY ) ) {
 				xpos = 0f;
@@ -117,83 +197,4 @@ public:
 			with( _text )
 				_text.draw( xpos, ypos, fatness, textDevide );
 	}
-}
-
-/**
- * Helper function for the media class - loads media off HDD creating objects for the media
- */
-auto loadInMedia() {
-	
-	IMedia[] media;
-	
-	bool[string] oneEach;
-
-	enum mediaLengthGreaterThanZero = media.length > 0;
-	
-	//#didn't read the instructions properly, didn't see (SpanMode.shallow) single folder only (not use sub folders).
-	string[] names;
-	foreach ( string e; dirEntries( g_playBackFolder, SpanMode.shallow) ) {
-		names ~= e;
-	}
-
-	// go through all the files setting them up
-	foreach( name; names.sort ) {
-		auto path = al_create_path( toStringz( name ) );
-		scope( exit )
-			al_destroy_path( path );
-
-		alias al_get_path_extension getExtension;
-		string 
-			extension = tolower( to!string( getExtension( path ) ) ),
-			fileNameBase;
-		if ( name.isFile )
-			fileNameBase = to!string( al_get_path_basename( path ) );
-		else {
-			writeln( "Ignore directory - ", name );
-			continue;
-		}
-
-		//#was under debug
-		writeln( format( "%s%s", fileNameBase, extension ) ); //#does not crash like writefln can
-		
-		debug {
-			//writeln( "Path: ", to!string( al_get_path_filename( path ) ) );
-			//writeln( "Is    right! ", g_playBackFolder ~ g_div ~ fileNameBase );
-			//auto mediaFile = al_create_path( toStringz( g_playBackFolder ) );
-			//auto mediaFile = al_create_path( g_playBackFolder );
-			//scope( exit )
-			//	al_destroy_path( mediaFile );
-			//al_append_path_component( mediaFile, toStringz( fileNameBase ) );
-			//assert( al_join_paths( mediaFile, path ), "join failed" );
-			//assert( al_rebase_path( mediaFile, path ), "rebase fail" );
-			//writeln( "Is it right? ", to!string( al_get_path_filename( path ) ) );
-		}
-		
-		if ( fileNameBase !in oneEach ) {
-			oneEach[ fileNameBase ] = true;
-			auto aMatch = false;
-			foreach( current; g_mediaExtentions.split ) {
-				if ( extension == current ) {
-					aMatch = true;
-					media ~= new Media(
-						media,
-						Colour.red,
-						Colour.yellow,
-						g_playBackFolder ~ g_div ~ fileNameBase,
-						//filename,
-					);
-				}
-			}
-			// If no matches for file (eg. 'shoe.mud' wouldn't be a match)
-			enum notAMatch = ! aMatch;
-			if ( notAMatch )
-				writeln( "Reject: ", to!string( al_get_path_filename( path ) ) );
-		}
-	} // for Dir
-	
-	// Take off the devide text for the last referance word
-	if ( mediaLengthGreaterThanZero )
-		media[ $ - 1 ].devide = false;
-	
-	return media;
 }

@@ -95,7 +95,7 @@ void main( string[] args ) {
 		*call;
 
 	// create and launch main class object, then start main loop
-	(new World).run;
+	(new World).run();
 }
 
 /**
