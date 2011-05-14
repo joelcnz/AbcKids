@@ -31,16 +31,6 @@ public:
 	void logic() {
 	
 		doInputStuff;
-	/+
-		version( ChangingFonts ) {
-			static int fp = 0, fpt = 0;
-			++fpt;
-			if ( fpt == 20 ) {
-				FONT = g_fonts[ fp = ( fp == g_fonts.length - 1 ? 0 : fp + 1 ) ];
-				fpt = 0;
-			}
-		}
-	+/
 	}
 
 	void draw() {

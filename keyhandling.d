@@ -26,7 +26,7 @@ public:
 			return exitTrue;
 		
 		// keep going through current events till none left, in which case contiune
-		while( getNextEvent )
+		while( getNextEvent() )
 		{
 			switch( event.type )
 			{

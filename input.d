@@ -1,5 +1,6 @@
+//#how come keyStuff doesn't need a prefixed '*'
 //#under construction - (repeating keys)
-//#should break this method into two
+//#should break this method into two -- maybe not
 //#speed (pitch?)
 module input;
 
@@ -9,6 +10,7 @@ import std.file;
 import std.conv;
 import std.traits: EnumMembers; // for foreach enums
 import std.array; // for empty
+import std.path;
 
 import jeca.all;
 
@@ -44,7 +46,7 @@ public:
 	this() {
 		_text = new Text(
 			/* xpos: */ 0,
-			/* ypos: */ al_get_display_height( DISPLAY ) - al_get_font_line_height( g_font ),
+			/* ypos: */ al_get_display_height( DISPLAY ) - al_get_font_line_height( g_font ), // centered
 			/* fat colour: */ Colour.blue,
 			/* slim colour: */ Colour.cyan
 		);
@@ -59,7 +61,7 @@ public:
 		// Use this sound in the case of each letter sound fails to load
 		auto blowSnd = new Snd(  g_playBackFolder ~ "/blow.wav" );
 		foreach( letter; a .. z ) {
-			auto fileName = g_voicesFolder ~ `/` ~ lowercase[ letter ] ~ ".wav";
+			auto fileName = g_voicesFolder ~ sep ~ lowercase[ letter ] ~ ".wav";
 
 			auto otherFileName = fileName[ 0 .. $ - 4 ] ~ ".ogg";
 			
@@ -79,9 +81,9 @@ public:
 	}
 
 	/**
-	 * Recieve input and play its letter
+	 * Receive input and play its letter
 	 */
-	//#should break this method into two
+	//#should break this method into two -- maybe not
 	auto doKeyInput( ref bool doShowRefWords, ref bool doShowPicture ) {
 		// put object text into the care of string text until later
 		string text = _text.stringText;
@@ -93,8 +95,9 @@ public:
 		// Do input
 		foreach( keyId; keysStart .. keysEnd ) //#not sure if keysEnd is a key, it isn't in the loop
 			foreach( keyStuff; [ &doAlphabet, &doSpace, &doNumbers, &doBackSpace, &doEnter ] ) {
-				auto result = keyStuff( keyId, text, doShowRefWords, doShowPicture );
-				if ( ! result.empty )
+				auto result = keyStuff( keyId, text, doShowRefWords, doShowPicture ); //#how come keyStuff doesn't need a prefixed '*'
+				auto notEmpty = ! result.empty;
+				if ( notEmpty )
 					return result;
 			}
 		

@@ -5,8 +5,6 @@
  */
 module world;
 
-//version = ChangingFonts;
-
 import std.stdio;
 import std.string;
 
