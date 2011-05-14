@@ -136,12 +136,12 @@ public:
 
 		if ( mediaLengthGreaterThanZero ) {
 			// last pos plus new word
-			xpos = last.text.xpos + al_get_text_width( FONT, toStringz( last.text.stringText ~ g_devide) );
+			xpos = last.text.xpos + al_get_text_width( g_font, toStringz( last.text.stringText ~ g_devide) );
 			ypos = last.text.ypos;
 			//If would hang over the edge of the screen, then start new line for word etc
-			if ( xpos + al_get_text_width( FONT, toStringz( text ~ g_devide ) ) > al_get_display_width( DISPLAY ) ) {
+			if ( xpos + al_get_text_width( g_font, toStringz( text ~ g_devide ) ) > al_get_display_width( DISPLAY ) ) {
 				xpos = 0f;
-				ypos = ypos + al_get_font_line_height( FONT );
+				ypos = ypos + al_get_font_line_height( g_font );
 			}
 		}
 		else {

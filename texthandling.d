@@ -62,7 +62,7 @@ public:
 	void draw( real x, real y, g_PrintFatness printFatness, in string stringText ) const {
 		void drawThin( ALLEGRO_COLOR colour, real x, real y ) {
 			al_draw_text(
-				FONT, // ALLEGRO_FONT
+				g_font, // ALLEGRO_FONT
 				colour, // colour
 				x, y, // xpos, ypos
 				ALLEGRO_ALIGN_LEFT, // alignment

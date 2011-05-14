@@ -35,6 +35,7 @@ import std.stdio;
 import std.string;
 import algo = std.algorithm;
 import std.typetuple;
+import std.path;
 
 import jeca.all;
 
@@ -93,9 +94,37 @@ void main( string[] args ) {
 	// loop through functions and calling them - font and display icon
 	foreach( call; [ &setUpGlobalFont, &setUpIcon ] )
 		*call;
+	
+	auto b = new Test( ".." ~ sep ~ "jeca" ~ sep ~ "mysha.pcx" );
+	clear( b ); //#this is a problem, and the dumbest kind of crash (exiting though), doesn't seem to always happen though
+	clear( b );
+	writeln( "lets eat strawberries!" );
 
 	// create and launch main class object, then start main loop
 	(new World).run();
+}
+
+class Test {
+	ALLEGRO_BITMAP* _bmp;
+	string _name;
+	
+	this( string file ) {
+		_name = file;
+		_bmp = loadBitmap( _name );
+		writeln( _name, " loaded" );
+	}
+	~this() {
+		writeln( '"', _name, '"' ~ " deconstructor called {" ); // Name gets wiped out
+		scope( exit )
+			writeln( '}' );
+		auto notNull = _bmp !is null;
+		if ( notNull ) {
+			al_destroy_bitmap( _bmp );
+			writeln( "Bitmap destroyed." );
+		} else {
+			writeln( "Bitmap is already null." );
+		}
+	}
 }
 
 /**
@@ -110,11 +139,7 @@ void someMixinsCalls( string[] args ) {
  * Make an array of fonts - the last one is set as the main one
  */
 void setUpGlobalFont() {
-//	g_fonts ~= al_load_font( "JJStencilsolid.TTF", 36, 0 );
-	g_fonts ~= al_load_font( "HARLOWSI.TTF", 36, 0 );
-	g_fonts ~= al_load_font( "DejaVuSans.ttf", 36, 0); // 18 seemed nice, (but small)
-	
-	FONT = g_fonts[ $ - 1 ];
+	g_font = al_load_font( "DejaVuSans.ttf", 36, 0); // 18 seemed nice, (but small)
 }
 
 /**

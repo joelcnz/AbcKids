@@ -1,3 +1,4 @@
+//#Not sure on name
 /**
  * Title: Base - variables with that are easiest to access
  * 
@@ -8,13 +9,16 @@ module base;
 //import jeca.all;
 import allegro5.allegro_font;
 
-/// Array of fonts
-ALLEGRO_FONT*[] g_fonts; // public by default
+/// What appears on the windows title bar
+immutable g_displayTitle = "Abc - Type, Hear, and See! :-)";
+
+/// Main font
+ALLEGRO_FONT* g_font; // public by default. //#Not sure on name
 
 /// Store the number of letters in the English alphabet
 immutable NUMBER_OF_LETTERS_IN_THE_ALPHABET = 26;
 
-/// Font thickness setting
+/// Font thickness list of possible settings
 enum g_PrintFatness { fat, slim };
 
 /// Empty string
@@ -28,7 +32,7 @@ immutable g_playBackFolder = "Playback";
 
 /// reference word devider
 immutable g_devide = ", ";
-immutable otherDevide = " / "; // unused
+immutable g_otherDevide = " / "; // unused
 
 /// End of list of keys
 immutable g_endOfList = ".";

@@ -44,7 +44,7 @@ public:
 	this() {
 		_text = new Text(
 			/* xpos: */ 0,
-			/* ypos: */ al_get_display_height( DISPLAY ) - al_get_font_line_height( FONT ),
+			/* ypos: */ al_get_display_height( DISPLAY ) - al_get_font_line_height( g_font ),
 			/* fat colour: */ Colour.blue,
 			/* slim colour: */ Colour.cyan
 		);

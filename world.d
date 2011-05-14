@@ -12,7 +12,7 @@ import std.string;
 
 import jeca.all;
 
-import keyhandling, current;
+import base, keyhandling, current;
 
 /**
  * Main loop handler
@@ -29,7 +29,7 @@ public:
 	 * and setup Input instance
 	 */
 	this() {
-		al_set_window_title( DISPLAY, "Abc - Type, Hear, and See! :-)" );
+		al_set_window_title( DISPLAY, g_displayTitle );
 		
 		_current = new Current;
 		_keyHandling = new KeyHandling;

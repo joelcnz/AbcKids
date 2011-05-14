@@ -31,7 +31,7 @@ public:
 	void logic() {
 	
 		doInputStuff;
-	
+	/+
 		version( ChangingFonts ) {
 			static int fp = 0, fpt = 0;
 			++fpt;
@@ -40,6 +40,7 @@ public:
 				fpt = 0;
 			}
 		}
+	+/
 	}
 
 	void draw() {
@@ -114,8 +115,8 @@ private:
 		// show ref words
 		if ( doShowRefWords ) {
 			foreach( media; _media )
-				foreach( textFatness; EnumMembers!g_PrintFatness ) // fat and slim type - fat prints slim x9
-					media.showRefWord( textFatness );
+				foreach( printFatness; EnumMembers!g_PrintFatness ) // fat and slim type - fat prints slim x9
+					media.showRefWord( printFatness );
 		}
 	}
 
@@ -127,12 +128,14 @@ private:
 				_picture = noPicture;
 
 			if ( _strInput != g_emptyText )
-				foreach( m; _media )
-					if ( _strInput.tolower == m.text.stringText.tolower ) {
+				foreach( m; _media ) {
+					auto inputNameMatch = _strInput.tolower == m.text.stringText.tolower;
+					if ( inputNameMatch ) {
 						m.tell;
 						if ( isAPicture( m.picture ) )
 							_picture = m.picture;
 					}
+				}
 		}
 	}
 }
