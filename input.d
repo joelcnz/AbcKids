@@ -1,3 +1,4 @@
+//#not work since 2.053
 //#how come keyStuff doesn't need a prefixed '*'
 //#under construction - (repeating keys)
 //#should break this method into two -- maybe not
@@ -10,33 +11,11 @@ import std.file;
 import std.conv;
 import std.traits: EnumMembers; // for foreach enums
 import std.array; // for empty
-import std.path;
+import std.path; // for sep( '\\' or '/' )
 
 import jeca.all;
 
-import base, texthandling;
-
-/**
- * Key press handler
- */
-struct Key {
-	bool keydown = false;
-	int tkey;
-	
-	bool keyHit() {
-		if ( key[ tkey ] ) {
-			//if ( ! keydown || timer > 0 ) { //#under construction - (repeating keys)
-			if ( ! keydown ) {
-				keydown = true;
-				
-				return true;
-			}
-		} else 
-			keydown = false;
-
-		return false;
-	}
-}
+import base, texthandling, keys;
 
 /**
  * For typing in the words to activate
@@ -59,7 +38,7 @@ public:
 		// go through the letters of the alphabet
 		immutable a = 0, z = 26;
 		// Use this sound in the case of each letter sound fails to load
-		auto blowSnd = new Snd(  g_playBackFolder ~ "/blow.wav" );
+		auto blowSnd = new Snd(  g_playBackFolder ~ sep ~ "blow.wav" );
 		foreach( letter; a .. z ) {
 			auto fileName = g_voicesFolder ~ sep ~ lowercase[ letter ] ~ ".wav";
 
@@ -113,7 +92,7 @@ public:
 	}
 private:
 	Key[ ALLEGRO_KEY_MAX + 1 ] _keys;
-	Snd[ NUMBER_OF_LETTERS_IN_THE_ALPHABET ] _lsnds;
+	Snd[ g_numberOfLettersInTheAphabet ] _lsnds;
 	IText _text;
 	immutable
 		keysStart = 0,
@@ -126,7 +105,10 @@ private:
 			_lsnds[ keyId - ALLEGRO_KEY_A ].play;
 
 			// add letter
-			enum keyShift = key[ ALLEGRO_KEY_LSHIFT ] || key[ ALLEGRO_KEY_RSHIFT ];
+			bool keyShift() {
+				return ( key[ ALLEGRO_KEY_LSHIFT ] || key[ ALLEGRO_KEY_RSHIFT ] );
+			}
+			//enum keyShift = key[ ALLEGRO_KEY_LSHIFT ] || key[ ALLEGRO_KEY_RSHIFT ]; //#not work since 2.053
 			text ~= ( ( ! keyShift ? 'a' : 'A' ) + ( keyId - ALLEGRO_KEY_A ) & 0xFF );
 		}
 		return g_emptyText;
@@ -148,7 +130,7 @@ private:
 	}
 	
 	string doBackSpace( int keyId, ref string text, ref bool doShowRefWords, ref bool doShowPicture  ) {
-		enum wordHasLength = text.length > 0;
+		bool wordHasLength = text.length > 0;
 		if ( wordHasLength && keyId == ALLEGRO_KEY_BACKSPACE && _keys[ ALLEGRO_KEY_BACKSPACE ].keyHit ) {
 			text = text[ 0 .. $ - 1 ];
 		}
@@ -183,6 +165,7 @@ private:
 				if ( doShowRefWords && doShowPicture ) {
 					// show words but no picture
 					doShowPicture = false;
+
 					return g_emptyText;
 				}
 			} // if input is nothing

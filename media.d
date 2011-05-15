@@ -44,7 +44,7 @@ public:
 		
 		bool[string] oneEach;
 
-		enum mediaLengthGreaterThanZero = media.length > 0;
+		auto mediaLengthGreaterThanZero = media.length > 0;
 		
 		//#didn't read the instructions properly, didn't see (SpanMode.shallow) single folder only (not use sub folders).
 		string[] names;
@@ -101,7 +101,7 @@ public:
 					}
 				}
 				// If no matches for file (eg. 'shoe.mud' wouldn't be a match)
-				enum notAMatch = ! aMatch;
+				auto notAMatch = ! aMatch;
 				if ( notAMatch )
 					writeln( "Reject: ", to!string( al_get_path_filename( path ) ) );
 			}
@@ -130,11 +130,10 @@ public:
 		string text = rootName[ indexOf( rootName, sep ) + 1 .. $ ].idup;
 		_devide = true;
 		real xpos = 0f, ypos = 0f;
-		enum
-			last = media[ $ - 1 ], // prev - previous media object
-			mediaLengthGreaterThanZero = media.length > 0;
+		bool mediaLengthGreaterThanZero = media.length > 0;
 
 		if ( mediaLengthGreaterThanZero ) {
+			auto last = media[ $ - 1 ]; // prev - previous media object
 			// last pos plus new word
 			xpos = last.text.xpos + al_get_text_width( g_font, toStringz( last.text.stringText ~ g_devide) );
 			ypos = last.text.ypos;

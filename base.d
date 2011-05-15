@@ -16,7 +16,7 @@ immutable g_displayTitle = "Abc - Type, Hear, and See! :-)";
 ALLEGRO_FONT* g_font; // public by default. //#Not sure on name
 
 /// Store the number of letters in the English alphabet
-immutable NUMBER_OF_LETTERS_IN_THE_ALPHABET = 26;
+immutable g_numberOfLettersInTheAphabet = 26;
 
 /// Font thickness list of possible settings
 enum g_PrintFatness { fat, slim };

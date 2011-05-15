@@ -27,7 +27,7 @@ public:
 	 * and setup Input instance
 	 */
 	this() {
-		al_set_window_title( DISPLAY, g_displayTitle );
+		al_set_window_title( DISPLAY, toStringz( g_displayTitle ) );
 		
 		_current = new Current;
 		_keyHandling = new KeyHandling;
