@@ -95,13 +95,17 @@ void main( string[] args ) {
 	foreach( call; [ &setUpGlobalFont, &setUpIcon ] )
 		*call;
 	
-	auto b = new Test( ".." ~ sep ~ "jeca" ~ sep ~ "mysha.pcx" );
+	auto b = new Test( "mysha.pcx" );
 	clear( b ); //#this is a problem, and the dumbest kind of crash (exiting though), doesn't seem to always happen though
 	clear( b );
 	writeln( "lets eat strawberries!" );
 
 	// create and launch main class object, then start main loop
-	(new World).run();
+	try {
+		(new World).run();
+	} catch( Exception e ) {
+		writeln( "Got to main: ", e.toString() );
+	}
 }
 
 class Test {
@@ -110,7 +114,7 @@ class Test {
 	
 	this( string file ) {
 		_name = file;
-		_bmp = loadBitmap( _name );
+		_bmp = Bmp.loadBitmap( _name );
 		writeln( _name, " loaded" );
 	}
 	~this() {
@@ -146,5 +150,5 @@ void setUpGlobalFont() {
  * Set icon for the window
  */
 void setUpIcon() {
-	al_set_display_icon( DISPLAY, loadBitmap( "abc.png" ) );
+	al_set_display_icon( DISPLAY, Bmp.loadBitmap( "abc.png" ) );
 }

@@ -57,6 +57,25 @@ private:
 	ALLEGRO_BITMAP* noPicture;
 	string _strInput;
 
+	void doInputStuff() {
+		// main Input method
+		with( _input ) {
+			_strInput = doKeyInput( /* ref: */ doShowRefWords, /* ref: */ doShowPicture );
+			if ( ! doShowPicture )
+				_picture = noPicture;
+
+			if ( _strInput != g_emptyText )
+				foreach( m; _media ) {
+					auto inputNameMatch = _strInput.tolower == m.text.stringText.tolower;
+					if ( inputNameMatch ) {
+						m.tell;
+						if ( isAPicture( m.picture ) )
+							_picture = m.picture;
+					}
+				}
+		}
+	}
+	
 	// check for picture (is it null or pointing to picture data)
 	bool isAPicture( in ALLEGRO_BITMAP* picture ) {
 		return ( picture !is null );
@@ -107,25 +126,6 @@ private:
 			foreach( media; _media )
 				foreach( printFatness; EnumMembers!g_PrintFatness ) // fat and slim type - fat prints slim x9
 					media.showRefWord( printFatness );
-		}
-	}
-
-	void doInputStuff() {
-		// main Input method
-		with( _input ) {
-			_strInput = doKeyInput( /* ref: */ doShowRefWords, /* ref: */ doShowPicture );
-			if ( ! doShowPicture )
-				_picture = noPicture;
-
-			if ( _strInput != g_emptyText )
-				foreach( m; _media ) {
-					auto inputNameMatch = _strInput.tolower == m.text.stringText.tolower;
-					if ( inputNameMatch ) {
-						m.tell;
-						if ( isAPicture( m.picture ) )
-							_picture = m.picture;
-					}
-				}
 		}
 	}
 }
