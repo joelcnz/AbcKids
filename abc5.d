@@ -113,9 +113,11 @@ class Test {
 	string _name;
 	
 	this( string file ) {
-		_name = file;
-		_bmp = Bmp.loadBitmap( _name );
-		writeln( _name, " loaded" );
+		if ( exist( file ) ) {
+			_name = file;
+			_bmp = Bmp.loadBitmap( _name );
+			writeln( _name, " loaded" );
+		}
 	}
 	~this() {
 		writeln( '"', _name, '"' ~ " deconstructor called {" ); // Name gets wiped out
