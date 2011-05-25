@@ -35,6 +35,7 @@ import std.stdio;
 import std.string;
 import algo = std.algorithm;
 import std.typetuple;
+import std.file;
 import std.path;
 
 import jeca.all;
@@ -113,7 +114,7 @@ class Test {
 	string _name;
 	
 	this( string file ) {
-		if ( exist( file ) ) {
+		if ( exists( file ) ) {
 			_name = file;
 			_bmp = Bmp.loadBitmap( _name );
 			writeln( _name, " loaded" );
