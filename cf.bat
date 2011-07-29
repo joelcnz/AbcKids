@@ -7,7 +7,7 @@ echo cf     default developing
 
 if "%1"=="" (
 echo ----- Doing a version for WIP ------
-dmd %src% abc.res -debug -debug=TDD libjeca.lib
+dmd %src% abc.res -debug -debug=TDD
 )
 
 if "%1"=="-r" (
@@ -20,6 +20,6 @@ del *.map
 if "%1"=="-d" (
 echo ------ Doing documentation ------
 echo open html folder, select all files, then right click open. Note: Firefox doesn't know what to do
-dmd %src% -c -D
+dmj *.d -c -D
 move *.html html
 )
