@@ -80,7 +80,7 @@ public:
 						drawThin( _fatColour, px, py );
 			break;
 			default:
-				assert( false, convText( to!string( printFatness ), " does not exist!" ) );
+				assert( false, convText( printFatness, " is invalid." ) );
 		}
 	} // draw
 } // text

@@ -2,6 +2,8 @@
  * More work on input.d [ ]
  * Add resize and save photos that are too big to fit in the display [ ]
  */
+//#Note: args[ 0 .. $ ] gets all, args[ 1 .. 3 ] gets 1, & 2
+//#Note immutable I think is for concurrancy(sp)
 //#doesn't draw strait onto bmp
 //#Split isn't clear this way ("foo bar".split), I think
 //#dlang.ogg is a funny one
@@ -47,13 +49,17 @@ import base, world;
  * Init JECA, run main class
  */
 void main( string[] args ) {
-	args = args[ 0 ] ~ "-wxh 640 480".split ~ args[ 1 .. $ ]; //#Split isn't clear this way ("foo bar".split), I think. Less typing though
+	//#Note: args[ 0 .. $ ] gets all, args[ 1 .. 3 ] gets 1, & 2
+	args = args[ 0 ] ~ "-wxh 640 480".split() ~ args[ 1 .. $ ]; //#Split isn't clear this way ("foo bar".split), I think. Less typing though
 	
 	// JECA init
+	//#Note immutable I think is for concurrancy(sp)
 	immutable succeed = 0;
 	if ( Init( args, ALLEGRO_INIT | TIMER | KEYBOARD | SOUND | GRAPHICS ) != succeed ) { // No mouse
 		return;
 	}
+	scope( exit )
+		Deinit;
 	
 	setUpGlobalFont();
 	setUpIcon();
@@ -67,7 +73,7 @@ void main( string[] args ) {
 }
 
 /**
- * Make an array of fonts - the last one is set as the main one
+ * Setup font for text
  */
 void setUpGlobalFont() {
 	g_font = al_load_font( "DejaVuSans.ttf", 36, 0); // 18 seemed nice, (but small)

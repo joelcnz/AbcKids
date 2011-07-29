@@ -30,21 +30,21 @@ public:
 	
 	void logic() {
 	
-		doInputStuff;
+		doInputStuff();
 	}
 
 	void draw() {
 		al_clear_to_color( Colour.black );
 		
-		drawPicture; // if one
+		drawPicture(); // if one
 
-		drawReferenceWords; // words and stuff
+		drawReferenceWords(); // words and stuff
 
 		//#not sure on using with with only one method call
 		with( _input )
-			drawTextInput;
+			drawTextInput();
 
-		al_flip_display;
+		al_flip_display();
 	}
 private:
 	IMedia[] _media; // sound, picture, and word dynamic array
@@ -66,7 +66,7 @@ private:
 
 			if ( _strInput != g_emptyText )
 				foreach( m; _media ) {
-					auto inputNameMatch = _strInput.tolower == m.text.stringText.tolower;
+					auto inputNameMatch = _strInput.toLower == m.text.stringText.toLower;
 					if ( inputNameMatch ) {
 						m.tell;
 						if ( isAPicture( m.picture ) )
@@ -84,16 +84,16 @@ private:
 	void drawPicture() {
 		// Show picture
 		if ( doShowPicture && isAPicture( _picture ) ) {
-			real
+			double
 				sw = al_get_bitmap_width( _picture ),
 				sh = al_get_bitmap_height( _picture ),
 				SCREEN_W = al_get_display_width( DISPLAY ),
 				SCREEN_H = al_get_display_height( DISPLAY );
-			real dw, dh;
+			double dw, dh;
 			dw = dh = 0;
 			if ( sw > SCREEN_W || sh > SCREEN_H ) {
-				real max = fmax( sw, sh );
-				real max2 = ( max == sw ? 640 : 480 );
+				double max = fmax( sw, sh );
+				double max2 = ( max == sw ? 640 : 480 );
 
 				dw = sw / max * max2,
 				dh = sh / max * max2;

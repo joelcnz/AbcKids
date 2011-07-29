@@ -44,7 +44,9 @@ public:
 		
 		bool[string] oneEach;
 
-		auto mediaLengthGreaterThanZero = media.length > 0;
+		bool mediaLengthGreaterThanZero() {
+			return media.length > 0;
+		}
 		
 		//#didn't read the instructions properly, didn't see (SpanMode.shallow) single folder only (not use sub folders).
 		string[] names;
@@ -60,7 +62,7 @@ public:
 
 			alias al_get_path_extension getExtension;
 			string 
-				extension = tolower( to!string( getExtension( path ) ) ),
+				extension = toLower( to!string( getExtension( path ) ) ),
 				fileNameBase;
 			if ( name.isFile )
 				fileNameBase = to!string( al_get_path_basename( path ) );
@@ -177,10 +179,10 @@ public:
 	 */
 	void showRefWord( in g_PrintFatness printFatness = g_PrintFatness.slim ) {
 		// decides what to add to the end of the word, depending if it's the last word or not
-		auto textDevide = _text.stringText ~ ( _devide == true ? g_devide : "" ) ;
+		auto textAndDevide = _text.stringText ~ ( _devide == true ? g_devide : g_endOfList ) ;
 		
 		foreach( fatness; EnumMembers!g_PrintFatness )
 			with( _text )
-				_text.draw( xpos, ypos, fatness, textDevide );
+				_text.draw( xpos, ypos, fatness, textAndDevide );
 	}
 }
