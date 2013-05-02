@@ -27,7 +27,7 @@ public:
 	 * and setup Input instance
 	 */
 	this() {
-		al_set_window_title( DISPLAY, toStringz( g_displayTitle ) );
+		al_set_window_title(DISPLAY, g_displayTitle.toStringz());
 		
 		_current = new Current;
 		_keyHandling = new KeyHandling;
@@ -39,14 +39,14 @@ public:
 	void run() {
 		auto exit = false, exitTrue = true;
 		while( ! exit ) {
-			if ( _keyHandling.doKeysAndCloseHandling == exitTrue )
+			if ( _keyHandling.doKeysAndCloseHandling() == exitTrue )
 				exit = true;
 			
 			with( _current )
 				_current.logic,
 				_current.draw;
 	
-			al_rest( 0.001 ) ;
+			al_rest(0.005);
 		}
 	}
 private:

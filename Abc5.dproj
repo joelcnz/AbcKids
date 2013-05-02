@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B3A2E065-3C5A-4B72-B02C-2B19E3D6EAF1}</ProjectGuid>
+    <UseDefaultCompiler>True</UseDefaultCompiler>
+    <IncrementalLinking>True</IncrementalLinking>
+    <PreferOneStepBuild>True</PreferOneStepBuild>
+    <Compiler>DMD</Compiler>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <OutputName>Abc5</OutputName>
+    <ObjectsDirectory>obj\Debug</ObjectsDirectory>
+    <Externalconsole>True</Externalconsole>
+    <Target>Executable</Target>
+    <ExtraCompilerArguments>bin\debug\abc.res</ExtraCompilerArguments>
+    <Commandlineparameters>-mode full</Commandlineparameters>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <OutputName>Abc5</OutputName>
+    <ObjectsDirectory>obj\Release</ObjectsDirectory>
+    <Externalconsole>True</Externalconsole>
+    <Target>Executable</Target>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Unittest|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <OutputPath>bin\Unittest</OutputPath>
+    <ExtraCompilerArguments>-unittest </ExtraCompilerArguments>
+    <ObjectsDirectory>obj\Unittest</ObjectsDirectory>
+    <OutputName>Abc5</OutputName>
+    <Externalconsole>True</Externalconsole>
+    <Target>Executable</Target>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="base.d" />
+    <Compile Include="current.d" />
+    <Compile Include="input.d" />
+    <Compile Include="keyhandling.d" />
+    <Compile Include="keys.d" />
+    <Compile Include="main.d" />
+    <Compile Include="media.d" />
+    <Compile Include="texthandling.d" />
+    <Compile Include="world.d" />
+    <Compile Include="progressbar.d" />
+  </ItemGroup>
+</Project>

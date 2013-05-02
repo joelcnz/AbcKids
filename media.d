@@ -12,7 +12,7 @@ import std.path;
 
 import jeca.all;
 
-import base, texthandling;
+import base, texthandling, progressbar;
 
 // Media: sound and stuff
 interface IMedia {
@@ -20,7 +20,7 @@ interface IMedia {
 	@property ALLEGRO_BITMAP* picture(); // picture
 	@property void devide( in bool devide0 ); // word/name devide setter 'cat, mouse' the ', ' is the thing
 	void showRefWord( in g_PrintFatness printFatness ); // display word/name, done thick or thin
-	void tell(); // play the sound
+	void tell(); // play the sound, if one
 }
 
 /**
@@ -50,19 +50,35 @@ public:
 		
 		//#didn't read the instructions properly, didn't see (SpanMode.shallow) single folder only (not use sub folders).
 		string[] names;
-		foreach ( string e; dirEntries( g_playBackFolder, SpanMode.shallow) ) {
+		foreach(string e; dirEntries(g_playBackFolder, SpanMode.shallow)) {
 			names ~= e;
 		}
 
 		// go through all the files setting them up
+		g_progressBar = ProgressBar(
+			/* step size: */ cast(float)DISPLAY_W / names.length,
+			/* fullLength: */ DISPLAY_W);
+
+		ALLEGRO_BITMAP* currentPicture;
+
+		// Init
+		with(g_progressBar)
+			process(),
+			draw();
+		al_flip_display();
 		foreach( name; names.sort ) {
-			auto path = al_create_path( toStringz( name ) );
+			al_clear_to_color(Colour.black);
+			with(g_progressBar)
+				process(),
+				draw();
+			
+			auto path = al_create_path(name.toStringz());
 			scope( exit )
 				al_destroy_path( path );
 
 			alias al_get_path_extension getExtension;
 			string 
-				extension = toLower( to!string( getExtension( path ) ) ),
+				extension = getExtension(path).to!string().toLower(),
 				fileNameBase;
 			if ( name.isFile )
 				fileNameBase = to!string( al_get_path_basename( path ) );
@@ -78,17 +94,30 @@ public:
 				oneEach[ fileNameBase ] = true;
 				auto aMatch = false;
 				foreach( current; g_mediaExtentions.split ) {
+					
 					if ( extension == current ) {
 						aMatch = true;
 						media ~= new Media(
 							media,
 							Colour.red,
 							Colour.yellow,
-							g_playBackFolder ~ sep ~ fileNameBase,
+							g_playBackFolder ~ dirSeparator ~ fileNameBase,
 							//filename,
 						);
+						//if (name.toLower.indexOf(".jpg") != -1)
+						if (media[$ - 1].picture) {
+							//al_draw_bitmap(media[$ - 1].picture, 0f, 25f, 0);
+							currentPicture = media[$ - 1].picture;
+						}
 					}
 				}
+
+				if (currentPicture !is null)
+					al_draw_bitmap(currentPicture, 0f, 25f, 0);
+				
+				//Update display
+				al_flip_display();
+
 				// If no matches for file (eg. 'shoe.mud' wouldn't be a match)
 				auto notAMatch = ! aMatch;
 				if ( notAMatch )
@@ -113,15 +142,15 @@ public:
 		ALLEGRO_COLOR slimColour,
 		string rootName
 	) {
-		debug( 10 )
-			mixin( trace( "rootName" ) );
+		debug(10)
+			mixin("rootName".trace);
 		
-		string text = rootName[ indexOf( rootName, sep ) + 1 .. $ ].idup;
+		string text = rootName[indexOf(rootName, dirSeparator) + 1 .. $].idup;
 		_devide = true;
 		real xpos = 0f, ypos = 0f;
 		bool mediaLengthGreaterThanZero = media.length > 0;
 
-		if ( mediaLengthGreaterThanZero ) {
+		if (mediaLengthGreaterThanZero) {
 			auto last = media[ $ - 1 ]; // prev - previous media object
 			// last pos plus new word
 			xpos = last.text.xpos + al_get_text_width( g_font, toStringz( last.text.stringText ~ g_devide) );
@@ -144,19 +173,20 @@ public:
 			text
 		);
 		
-		foreach( ext; split( g_imageExtentions ) )
+		foreach( ext; g_imageExtentions.split())
 			if ( exists( rootName ~ ext ) ) {
-				_pic = new Bmp( rootName ~ ext );
+				//al_set_new_bitmap_flags(ALLEGRO_MAG_LINEAR);
+				_pic = new Bmp( (rootName ~ ext).checkFile(" image file loaded.") );
 				break;
-			} 
-		foreach( ext; split( g_soundExtentions ) ) {
+			}
+
+		foreach( ext; g_soundExtentions.split())
 			if ( exists( rootName ~ ext ) ) {
-				_snd = al_load_sample( toStringz( rootName ~ ext ) );
+				_snd = al_load_sample( toStringz( (rootName ~ ext).checkFile(" sound file loaded.") ) );
 				if ( _snd is null )
 					writeln( rootName ~ ext ~ " warning sound failed!" );
 				break;
 			}
-		}
 	} // this
 
 	/**

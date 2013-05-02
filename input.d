@@ -1,5 +1,3 @@
-//#not work since 2.053
-//#how come keyStuff doesn't need a prefixed '*'
 //#under construction - (repeating keys)
 //#should break this method into two -- maybe not
 //#speed (pitch?)
@@ -11,17 +9,23 @@ import std.file;
 import std.conv;
 import std.traits: EnumMembers; // for foreach enums
 import std.array; // for empty
-import std.path; // for sep( '\\' or '/' )
+import std.path; // for pathSeparator( '\\' or '/' )
+import std.ascii;
 
 import jeca.all;
 
 import base, texthandling, keys;
 
+alias std.ascii.lowercase lowercase;
+
 /**
  * For typing in the words to activate
  */
+@("hello",1,2.3,'4')
 class Input {
 public:
+	Snd blowSnd;
+
 	this() {
 		_text = new Text(
 			/* xpos: */ 0,
@@ -38,9 +42,9 @@ public:
 		// go through the letters of the alphabet
 		immutable a = 0, z = 26;
 		// Use this sound in the case of each letter sound fails to load
-		auto blowSnd = new Snd(  g_playBackFolder ~ sep ~ "blow.wav" );
+		blowSnd = new Snd(  g_playBackFolder ~ dirSeparator ~ "blow.wav" );
 		foreach( letter; a .. z ) {
-			auto fileName = g_voicesFolder ~ sep ~ lowercase[ letter ] ~ ".wav";
+			auto fileName = g_voicesFolder ~ dirSeparator ~ lowercase[ letter ] ~ ".wav";
 
 			auto otherFileName = fileName[ 0 .. $ - 4 ] ~ ".ogg";
 			
@@ -57,6 +61,25 @@ public:
 			else
 				writeln( fileName, " - not exist! - Get hold of your vendor at once!" );
 		}
+		
+		foreach( number; 0 .. 9 + 1 ) {
+			auto fileName = g_voicesFolder ~ dirSeparator ~ number.to!string() ~ ".wav";
+
+			auto otherFileName = fileName[ 0 .. $ - 4 ] ~ ".ogg";
+			
+			if ( ! exists( fileName ) && exists( otherFileName ) )
+				fileName = otherFileName;
+
+			if ( exists( fileName ) ) {
+				_nsnds[ number ] = new Snd( fileName );
+				if ( _nsnds[ number ] is null ) {
+					writeln( fileName, " - not load! - Get hold of your vendor at once!" );
+					_nsnds[ number ] = blowSnd; // default sound
+				}
+			}
+			else
+				writeln( fileName, " - not exist! - Get hold of your vendor at once!" );
+		}
 	}
 
 	/**
@@ -68,13 +91,15 @@ public:
 		string text = _text.stringText;
 
 		// update text before exiting function
-		scope( exit )
+		scope( exit ) {
 			_text.stringText = text;
+			g_inputLets = text;
+		}
 
 		// Do input
 		foreach( keyId; keysStart .. keysEnd ) //#not sure if keysEnd is a key, it isn't in the loop
-			foreach( keyStuff; [ &doAlphabet, &doSpace, &doNumbers, &doBackSpace, &doEnter ] ) {
-				auto result = keyStuff( keyId, text, doShowRefWords, doShowPicture ); //#how come keyStuff doesn't need a prefixed '*'
+			foreach(keyStuff; [&doAlphabet, &doSpace, &doNumbers, &doBackSpace, &doEnter]) {
+				auto result = keyStuff( keyId, text, doShowRefWords, doShowPicture );
 				auto notEmpty = ! result.empty;
 				if ( notEmpty )
 					return result;
@@ -88,11 +113,12 @@ public:
 	 */
 	void drawTextInput() const {
 		foreach( fatness; EnumMembers!g_PrintFatness )
-			_text.draw( fatness );
+			_text.draw(fatness, true);
 	}
 private:
 	Key[ ALLEGRO_KEY_MAX + 1 ] _keys;
 	Snd[ g_numberOfLettersInTheAphabet ] _lsnds;
+	Snd[ 10 ] _nsnds;
 	IText _text;
 	immutable
 		keysStart = 0,
@@ -108,7 +134,6 @@ private:
 			bool keyShift() {
 				return ( key[ ALLEGRO_KEY_LSHIFT ] || key[ ALLEGRO_KEY_RSHIFT ] );
 			}
-			//enum keyShift = key[ ALLEGRO_KEY_LSHIFT ] || key[ ALLEGRO_KEY_RSHIFT ]; //#not work since 2.053
 			text ~= ( ( ! keyShift ? 'a' : 'A' ) + ( keyId - ALLEGRO_KEY_A ) & 0xFF );
 		}
 		return g_emptyText;
@@ -124,6 +149,7 @@ private:
 	string doNumbers( int keyId, ref string text, ref bool doShowRefWords, ref bool doShowPicture  ) {
 		if ( keyId >= ALLEGRO_KEY_0 && keyId <= ALLEGRO_KEY_9 )
 			if ( _keys[ keyId ].keyHit ) {
+				_nsnds[ keyId - ALLEGRO_KEY_0 ].play;
 				text ~= '0' + ( keyId - ALLEGRO_KEY_0 ) & 0xFF;
 			}
 		return g_emptyText;
@@ -132,6 +158,7 @@ private:
 	string doBackSpace( int keyId, ref string text, ref bool doShowRefWords, ref bool doShowPicture  ) {
 		bool wordHasLength = text.length > 0;
 		if ( wordHasLength && keyId == ALLEGRO_KEY_BACKSPACE && _keys[ ALLEGRO_KEY_BACKSPACE ].keyHit ) {
+			blowSnd.play();
 			text = text[ 0 .. $ - 1 ];
 		}
 		return g_emptyText;

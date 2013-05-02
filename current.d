@@ -1,3 +1,5 @@
+//#not work should look at D->UDA on delicious
+//#hack, uses global symbol
 //#not sure on using with with only one method call
 /**
  * Title: Current (like current picture)
@@ -6,8 +8,10 @@ module current;
 
 import std.stdio;
 import std.string;
+import std.conv;
 import std.traits: EnumMembers; // for foreach enums
 import std.math;
+import std.random;
 
 import jeca.all;
 
@@ -29,7 +33,6 @@ public:
 	}
 	
 	void logic() {
-	
 		doInputStuff();
 	}
 
@@ -41,8 +44,10 @@ public:
 		drawReferenceWords(); // words and stuff
 
 		//#not sure on using with with only one method call
-		with( _input )
+		with(_input)
 			drawTextInput();
+		
+		al_rest(0.005);
 
 		al_flip_display();
 	}
@@ -56,23 +61,39 @@ private:
 	
 	ALLEGRO_BITMAP* noPicture;
 	string _strInput;
+	//alias g_inputLets _strInput; //#hack, uses global symbol
 
 	void doInputStuff() {
+		
+		//if (__traits(getAttributes, typeof(_input)).to!string() == "tuple((Key))") //#not work should look at D->UDA on delicious
+		//	writeln("A key");
+		pragma(msg, __traits(getAttributes, typeof(_input)));
+
 		// main Input method
 		with( _input ) {
 			_strInput = doKeyInput( /* ref: */ doShowRefWords, /* ref: */ doShowPicture );
 			if ( ! doShowPicture )
 				_picture = noPicture;
 
-			if ( _strInput != g_emptyText )
+			if ( _strInput != g_emptyText ) {
+				auto noMedia = true;
 				foreach( m; _media ) {
 					auto inputNameMatch = _strInput.toLower == m.text.stringText.toLower;
 					if ( inputNameMatch ) {
+						noMedia = false;
 						m.tell;
 						if ( isAPicture( m.picture ) )
 							_picture = m.picture;
-					}
+					}	
 				}
+				if ( noMedia && _strInput.length > 0 ) {
+					IMedia m;
+					do {
+						m = _media[ uniform( 0, $ ) ];
+					} while( ! isAPicture( m.picture ) );
+					_picture = m.picture;
+				}
+			}
 		}
 	}
 	

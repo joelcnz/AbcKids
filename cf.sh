@@ -1,1 +1,1 @@
-dmd abc5 base world media input keyhandling texthandling current abc.res -debug -debug=TDD libjeca.lib
+dmd -ofbin/Debug/run *.d -L-L. -debug -debug=TDD -I../Jeca -I../OtherPeoples/dallegro5

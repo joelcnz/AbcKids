@@ -4,6 +4,8 @@
 Abc5 (or maybe 'Spell it, hear it, see it')
 *******************************************
 
+always have blow.wav in the playback folder, or the program may not even run.
+
 To build:
 
 You need:
@@ -30,5 +32,5 @@ Note: if your using Linux, the sounds may not work.
 This program was made with (as follows):
 
 The D Programming langage: www.digitalmars.com
-Allegro 5: www.liballeg.org
-DAllegro: https://github.com/SiegeLord/DAllegro5
+Allegro 5: www.liballeg.org // have to change this
+DAllegro5: https://github.com/SiegeLord/DAllegro5

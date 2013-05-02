@@ -22,8 +22,9 @@ public:
 		
 		poll_input; //#may be not needed after a library fix
 		
-		if ( key[ ALLEGRO_KEY_ESCAPE ] )
-			return exitTrue;
+		//#turned off escape because of Tiana
+		//if ( key[ALLEGRO_KEY_ && key[ ALLEGRO_KEY_ESCAPE ] )
+		//	return exitTrue;
 		
 		// keep going through current events till none left, in which case contiune
 		while( getNextEvent() )

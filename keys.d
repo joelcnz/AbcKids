@@ -1,3 +1,4 @@
+//#allow holding down keys
 /**
  * Keys struct, handle each key press
  */
@@ -14,7 +15,9 @@ struct Key {
 	
 	/// Handle key press
 	bool keyHit() {
+		poll_input;
 		if ( key[ tkey ] ) {
+			//#allow holding down keys
 			//if ( ! keydown || timer > 0 ) { //#under construction - (repeating keys)
 			if ( ! keydown ) {
 				keydown = true;

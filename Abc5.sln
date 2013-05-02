@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{3947E667-4C90-4C3A-BEB9-7148D6FE0D7C}") = "Abc5", "Abc5.dproj", "{B3A2E065-3C5A-4B72-B02C-2B19E3D6EAF1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Unittest|Any CPU = Unittest|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3A2E065-3C5A-4B72-B02C-2B19E3D6EAF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3A2E065-3C5A-4B72-B02C-2B19E3D6EAF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3A2E065-3C5A-4B72-B02C-2B19E3D6EAF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3A2E065-3C5A-4B72-B02C-2B19E3D6EAF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3A2E065-3C5A-4B72-B02C-2B19E3D6EAF1}.Unittest|Any CPU.ActiveCfg = Unittest|Any CPU
+		{B3A2E065-3C5A-4B72-B02C-2B19E3D6EAF1}.Unittest|Any CPU.Build.0 = Unittest|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Abc5.dproj
+	EndGlobalSection
+EndGlobal
